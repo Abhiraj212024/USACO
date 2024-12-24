@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/abhirajraje/Documents/USACO/introductory_problems/Bucket_Brigade/bucket'
+relocations:     []
+...
