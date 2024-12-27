@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/abhirajraje/Documents/USACO/Bronze/Simulation/Bovine_Shuffle/bovine_shuffle'
+relocations:     []
+...
