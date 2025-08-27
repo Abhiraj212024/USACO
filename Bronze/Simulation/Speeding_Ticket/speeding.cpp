@@ -1,33 +1,60 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <deque>
 
 using namespace std;
 
 int main(){
-    int m{}, n{};
-    cout << "Enter n and m: ";
+    int n, m;
     cin >> n >> m;
-    vector<vector<int>> ideal;
-    int length_of_n{}, limit{}, speed{}, ideal_pointer{0}, length_of_m{}, distance{0}, deficit{}, max_deficit;
-    for(int i{0}; i < n; i++){
-        cout << "Enter length and speed limit: ";
-        cin >> length_of_n >> limit;
-        distance += length_of_n;
-        vector<int> buffer {distance, limit};
-        ideal.push_back(buffer);
+    deque<int> vs;
+    deque<int> ls;
+    deque<int> vb;
+    deque<int> lb;
+
+    for(int i = 0; i < n; ++i){
+        int a, b;
+        cin >> a >> b;
+        ls.push_back(a);
+        vs.push_back(b);
     }
-    distance = 0;
-    for(int i{0}; i < m; i++){
-        cout << "Enter length and speed: ";
-        cin >> length_of_m >> speed;
-        distance += length_of_m;
-        while(((ideal.at(ideal_pointer)).at(0) < distance) && ideal_pointer < n){
-            ideal_pointer++;
+    
+    for(int i = 0; i < m; ++i){
+        int a, b;
+        cin >> a >> b;
+        lb.push_back(a);
+        vb.push_back(b);
+    }
+
+    int max_diff = 0;
+
+    while(!lb.empty() && !ls.empty()){
+
+        if(lb.front() < ls.front()){
+            max_diff = max(max_diff, vb.front() - vs.front());
+            int distance_def = ls.front()-lb.front();
+            ls.pop_front();
+            lb.pop_front();
+            ls.push_front(distance_def);
+            vb.pop_front();
+        }else if(lb.front() > ls.front()){
+            max_diff = max(max_diff, vb.front()-vs.front());
+            int distance_def = lb.front() - ls.front();
+            ls.pop_front();
+            lb.pop_front();
+            lb.push_front(distance_def);
+            vs.pop_front();
+        }else{
+            max_diff = max(max_diff, vb.front()-vs.front());
+            ls.pop_front();
+            lb.pop_front();
+            vs.pop_front();
+            vb.pop_front();
         }
-        deficit = (ideal.at(ideal_pointer)).at(1) - speed;
-        max_deficit = max(max_deficit, deficit);
     }
-    cout << "The maximum deficit is: " << max_deficit;
+
+    cout << max_diff << endl;
+
     return 0;
 }
