@@ -40,18 +40,20 @@ REASON: In this example, 1 participant was registered in each division prior to 
 using namespace std;
 
 int main(){
-    int bronze_init{0}, bronze_final{0}, silver_init{0}, silver_final{0}, gold_init{0}, gold_final{0}, plat_init{0}, plat_final{0};
-    cout << "Enter bronze initial and final separated by space: ";
-    cin >> bronze_init >> bronze_final;
-    cout << "Enter silver initial and final separated by space: ";
-    cin >> silver_init >> silver_final;
-    cout << "Enter gold initial and final separated by space: ";
-    cin >> gold_init >> gold_final;
-    cout << "Enter platinum initial and final separated by space: ";
-    cin >> plat_init >> plat_final;
-    int gold_to_platinum {plat_final - plat_init};
-    int silver_to_gold {gold_final - gold_init + gold_to_platinum};
-    int bronze_to_silver {silver_final - silver_init + silver_to_gold + gold_to_platinum};
-    cout << bronze_to_silver << "\n" << silver_to_gold << "\n" << gold_to_platinum;
+    int a0, a1, a2, a3;
+    int b0, b1, b2, b3;
+    vector<int> ans;
+    cin >> b0 >> a0;
+    cin >> b1 >> a1;
+    cin >> b2 >> a2;
+    cin >> b3 >> a3;
+
+    int bs{0}, sg{0}, gp{0};
+    gp = a3-b3;
+    sg = a2-b2+gp;
+    bs=a1-b1+sg;
+
+    cout << "\n" << bs << "\n" << sg << "\n" << gp;
+
     return 0;
 }
