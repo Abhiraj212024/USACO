@@ -43,48 +43,29 @@ OUTPUT:
 #include <vector>
 using namespace std;
 
-int min_element(vector<int> v){
-    int minimum{INT_MAX};
-    for(auto e : v){
-        minimum = min(minimum, e);
-    }
-    return minimum;
-}
-int max_element(vector<int> v){
-    int maximum{INT_MIN};
-    for(auto e : v){
-        maximum = max(maximum, e);
-    }
-    return maximum;
-}
+
 int main(){
-    cout << "Enter the number of cows: ";
-    unsigned int cows{0};
-    cin >> cows;
-    vector<int> s;
-    vector<int> t;
-    vector<int> b;
+    int n;
+    cin >> n;
+    vector<int> delta(1001, 0); //problem constraint: time <= 1000
 
-    for(unsigned int i{0}; i < cows; i++){
-        int si{}, ti{}, bi{};
-        cout << "Enter s t b of " << i << " cow: ";
-        cin >> si >> ti >> bi;
-        s.push_back(si);
-        t.push_back(ti);
-        b.push_back(bi);
+    for(int i = 0; i < n; i++){
+        int s, t, b;
+        cin >> s >> t >> b;
+
+        delta[s] += b;
+        delta[t] -= b;
     }
-    int min_time {min_element(s)}, max_time{max_element(t)};
-    int buckets{}, max_buckets{};
-    for(int time{min_time}; time <= max_time; time++){
-        for(unsigned int i{0}; i < cows; i++){
-            if(time >= s.at(i) && time <= t.at(i)){
-                buckets += b.at(i);
-            }
-        }
+
+    int max_buckets = 0;
+    int buckets = 0;
+
+    for(int time = 1; time <= 1000; time++){
+        buckets += delta[time];
         max_buckets = max(max_buckets, buckets);
-        buckets = 0;
     }
 
-    cout << "\n" << max_buckets;
+    cout << max_buckets << endl;
+
     return 0;
 }
