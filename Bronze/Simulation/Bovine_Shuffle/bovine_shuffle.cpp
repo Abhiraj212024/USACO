@@ -42,38 +42,38 @@ SAMPLE OUTPUT:
 
 using namespace std;
 
-vector<long> shuffle(vector<long> cows, vector<int> order, size_t size){
-    vector<long> shuffled_vector(size);
-    for(size_t j{0}; j < (size - 3); j++){
-        for(size_t i{0}; i < size; i++){
-            shuffled_vector[order.at(i) - 1] = cows.at(i);
-        }
+void shuffle(vector<long>& id, vector<int> order, int n){
+    vector<int> buff(n, 0);
+    for(int i = 0; i < n; i++){
+        buff[i] = id[order[i]];
     }
-    return shuffled_vector;
+    for(int i = 0; i < n; i++){
+        id[i] = buff[i];
+    }
+    
 }
+
 int main(){
-    size_t size {0};
-    cout << "Enter number of cows: ";
-    cin >> size;
-    cout << "Enter the shuffling order: " << endl;
-    vector<int> order;
-    for(size_t i{0}; i < size; i++){
-        int buffer{0};
-        cin >> buffer;
-        order.push_back(buffer);
+    int n;
+    cin >> n;
+    vector<int> order(n);
+    for(int i = 0; i < n; i++){
+        cin >> order[i];
     }
-    vector<long> cows;
-    cout << "Enter the id: " <<endl;
-    for(size_t i{0}; i < size; i++){
-        long buff{0};
-        cin >> buff;
-        cows.push_back(buff);
-    } 
-    cout << endl;
-    cout << "The original was: " << endl;
-    vector<long> original = shuffle(cows, order, size);
-    for(auto el : original){
-        cout << el << endl;
+    vector<long> id(n);
+    for(int i = 0; i < n; i++){
+        cin >> id[i];
+    }
+    for(int i = 0; i < n; i++){
+        order[i] = order[i] - 1;
+    }
+
+    for(int i = 0; i < n-2; i++){
+        shuffle(id, order, n);
+    }
+
+    for(auto elem : id){
+        cout << elem << "\n";
     }
 
     return 0;
