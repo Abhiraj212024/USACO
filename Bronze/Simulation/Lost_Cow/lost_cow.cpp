@@ -31,33 +31,27 @@ to the zig-zag search strategy above until he finds Bessie
 using namespace std;
 
 int main(){
-    int x{}, y{};
-    cout << "Enter x and y: ";
+    int x,y;
     cin >> x >> y;
-    int n{1};
-    int p{};
-    int distance{};
-    int old_pos{x},new_pos{};
-    if(x < y){
-        while((x+n) <= y){ //n : 1 -2 4 -8
-            new_pos = x + n;
-            p++;
-            n = ((int)pow(-1, p)) * 2 * abs(n);
-            distance += abs(new_pos - old_pos);
-            old_pos = new_pos;
+    int total_distance = 0;
+    int prev = x;
+    int step = 1;
+
+    while(true){
+        int curr = x + step;
+
+        if((prev <=  y && y <= curr) || (prev >= y && curr <= y)){
+            total_distance += abs(y-prev);
+            break;
+        }else{
+            total_distance += abs(curr - prev);
         }
-        distance += abs(old_pos - y);  
-    }else if(x > y){
-        while((x+n) >= y){
-            new_pos = x + n;
-            p++;
-            n *= ((int)pow(-1, p)) * 2 * abs(n);
-            distance += abs(new_pos - old_pos);
-            old_pos = new_pos;
-        }
-        distance += abs(old_pos - y);
+
+        prev = curr;
+        step *= -2;
     }
-    cout << distance;
+
+    cout << total_distance << "\n";
 
     return 0;
 }
