@@ -59,41 +59,52 @@ using namespace std;
 
 int main(){
     int n{};
-    cout << "Enter the value of n: ";
     cin >> n;
-    vector<string> state;
-    vector<int> lower_limit;
-    vector<int> upper_limit;
-    for(int i{0}; i < n; i++){
-        string state_i{};
-        int lower{}, upper{};
-        cout << "Enter the state of " << i+1 << " mile: ";
-        cin >> state_i;
-        cout << "Enter the lower and upper limit of " << i+1 << " mile: ";
-        cin >> lower >> upper;
-        state.push_back(state_i);
-        lower_limit.push_back(lower);
-        upper_limit.push_back(upper);
+    int lower_bound = 0;
+    int upper_bound = INT_MAX/2;
+
+    vector<string> segments(n, " ");
+    vector<int> lower(n, 0);
+    vector<int> upper(n, 0);
+    for(int i = 0; i < n; ++i){
+        cin >> segments[i] >> lower[i] >> upper[i];
     }
-    int maximum_lower_limit{}, minimum_upper_limit{};
-    for(int i{0}; i < n; i++){
-        if(state.at(i) == "none"){
-            maximum_lower_limit = max(maximum_lower_limit, lower_limit.at(i));
-            minimum_upper_limit = min(minimum_upper_limit, upper_limit.at(i));
-        }
-    }
-    int before_lower{maximum_lower_limit}, after_lower{maximum_lower_limit}, before_upper{minimum_upper_limit}, after_upper{minimum_upper_limit};
-    for(int i{0}; i < n; i++){
-        if(state.at(i) == "on"){
-            before_lower -= lower_limit.at(i);
-            before_upper -= upper_limit.at(i);
-        }else if(state.at(i) == "off"){
-            after_lower -= upper_limit.at(i);
-            after_upper -= lower_limit.at(i);
+
+    for(int i = n-1; i >= 0; --i){
+        if(segments[i] == "none"){
+            lower_bound = max(lower_bound, lower[i]);
+            upper_bound = min(upper_bound, upper[i]);
+        }else if(segments[i] == "off"){
+            lower_bound += lower[i];
+            upper_bound += upper[i];
+        }else{
+            lower_bound -= upper[i];
+            upper_bound -= lower[i];
+            lower_bound = max(0, lower_bound);
         }
     }
 
-    cout << "Before: " << before_lower << " " << before_upper << endl;
-    cout << "After: " << after_lower << " " << after_upper << endl;
+    cout << lower_bound << " " << upper_bound << "\n";
+
+    lower_bound = 0;
+    upper_bound = INT_MAX/2;
+
+
+    for(int i = 0; i < n; i++){
+        if(segments[i] == "none"){
+            lower_bound = max(lower_bound, lower[i]);
+            upper_bound = min(upper_bound, upper[i]);
+        }else if(segments[i] == "off"){
+            lower_bound -= upper[i];
+            upper_bound -= lower[i];
+            lower_bound = max(0, lower_bound);
+        }else{
+            lower_bound += lower[i];
+            upper_bound += upper[i];
+        }
+    }
+
+    cout << lower_bound << " " << upper_bound << "\n";
+
     return 0;
 }
