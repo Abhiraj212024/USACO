@@ -7,7 +7,7 @@
 # Keep C++ source and headers and gitignore other files
 !*.gitignore
 !*.gitattributes
-!*.README.md
+!*.md
 !*.cpp
 !*.h
 
