@@ -1,0 +1,19 @@
+# Ignore everything by default
+*
+
+# Allow directories (so Git can descend into them)
+!*/
+
+# Keep C++ source and headers and gitignore other files
+!*.gitignore
+!*.gitattributes
+!*.README.md
+!*.cpp
+!*.h
+
+# Ignore compiled binaries and debug symbols
+*.o
+*.out
+*.exe
+main
+*.dSYM/
