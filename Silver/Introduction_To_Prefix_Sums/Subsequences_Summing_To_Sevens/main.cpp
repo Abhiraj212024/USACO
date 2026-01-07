@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 
 using namespace std;
 
@@ -14,29 +15,22 @@ int main(){
 		prefix[i] = prefix[i-1] + static_cast<long long>(arr[i]);
 	}
 
-	// apply sliding window
-	int win_size = N-1;
-	while(win_size > 0){
+	unordered_map<int, int> seen_remainder;
 
-		int i = 1;
-		int j = i+win_size;
-		bool found = false;
+	int max_distance = INT_MIN;
 
-		while(j <= N){
-			long long subarray_sum = prefix[j] - prefix[i];
-			if(subarray_sum % 7 == 0){
-				found = true;
-				break;
-			}
-			i++;
-			j++;
+	for(int i{1}; i <= N; i++){
+		if(seen_remainder.find((prefix[i] % 7)) == seen_remainder.end()){
+			seen_remainder[prefix[i]%7] = i;
 		}
 
-		if(found) break;
+		//found a similar mod, the stored index is definitely smaller
 
-		win_size--;
+		max_distance = max(max_distance, (i - seen_remainder[prefix[i] % 7]));
+
 	}
 
-	cout << win_size << endl;
+	cout << max_distance << endl;
+
 	return 0;
 }
