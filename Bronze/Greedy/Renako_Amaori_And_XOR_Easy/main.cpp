@@ -7,6 +7,8 @@ bool is_satisfied(int ones){
 	return true;
 }
 
+// for the hard part of this problem, replace each input element x with x % 2
+
 int main(){
 	int t;
 	cin >> t;
@@ -15,8 +17,16 @@ int main(){
 		cin >> n;
 		vector<int> a(n);
 		vector<int> b(n);
-		for(int i = 0; i < n; i++) cin >> a[i];
-		for(int i = 0; i < n; i++) cin >> b[i];
+		for(int i = 0; i < n; i++){
+			int x;
+			cin >> x;
+			a[i] = x%2; // modification done for hard
+		}
+		for(int i = 0; i < n; i++){
+			int x;
+			cin >> x;
+			b[i] = x%2; // modification done for hard
+		}
 
 		int a_one = 0;
 		int b_one = 0;
