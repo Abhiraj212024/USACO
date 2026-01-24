@@ -17,3 +17,6 @@
 *.exe
 main
 *.dSYM/
+
+
+temp.txt
