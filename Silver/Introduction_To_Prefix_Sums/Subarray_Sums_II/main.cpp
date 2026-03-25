@@ -1,44 +1,39 @@
 #include <iostream>
+#include <vector>
 #include <unordered_map>
+
 using namespace std;
 
-int main(){
+int main() {
+    ios_base::sync_with_stdio(false); // Speed up I/O
+    cin.tie(NULL);
 
-	int n, x;
-	cin >> n >> x;
+    int n;
+    long long x;
+    cin >> n >> x;
 
-	vector<int> arr(n+1, 0);
+    vector<int> arr(n);
+    for(int i = 0; i < n; i++) cin >> arr[i];
 
-	for(int i{1}; i <= n; i++) cin >> arr[i];
+    unordered_map<long long, int> freq;
+    freq[0] = 1; // Base case: an empty prefix sum is 0
+    
+    long long current_prefix_sum = 0;
+    long long total = 0;
 
-	vector<int> prefix(n+1, 0);
-	for(int i{1}; i <= n; i++){
-		prefix[i] = prefix[i-1] + arr[i];
-	}
+    for(int i = 0; i < n; i++) {
+        current_prefix_sum += arr[i];
+        
+        // Check if (current_prefix_sum - x) exists in the map
+        if(freq.count(current_prefix_sum - x)) {
+            total += freq[current_prefix_sum - x];
+        }
+        
+        // Add current prefix sum to the map for future indices
+        freq[current_prefix_sum]++;
+    }
 
-	//create frequency map
+    cout << total << "\n";
 
-	unordered_map<int, int> freq;
-	freq[0] = 1;
-	for(int i{1}; i <= n; i++){
-		if(freq.find(prefix[i]) == freq.end()){
-			freq[prefix[i]] = 1;
-		}else{
-			freq[prefix[i]] += 1;
-		}
-	}
-
-	int total = 0;
-	
-	for(int i{1}; i <= n; i++){
-		int a = prefix[i];
-		int b = a - x;
-		if(freq.find(b) != freq.end()){
-			total += freq[b];
-		}
-	}
-
-	cout << total << "\n";
-
-	return 0;
+    return 0;
 }
