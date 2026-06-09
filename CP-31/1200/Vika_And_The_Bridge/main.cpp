@@ -37,7 +37,7 @@ int main()
 
 		priority_queue<int> jumps[k + 1]; // Create a priority queue for each color to store jump lengths
 
-		int ans = INT_MAX; // Initialize the answer to the maximum possible integer value
+		int ans = INT_MAX; // Initialize the answer to the maximum possible integer valucd
 
 		for (int i = 1; i <= k; i++)
 		{
