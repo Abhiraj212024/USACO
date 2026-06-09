@@ -21,7 +21,7 @@ int main(){
             j += n-1;
             n--;
         }
-        ans.push_back(b[l-1] + 1);
+        ans.push_back(b[l-1]);
 
         for(const int& num : ans){
             cout << num << " ";
