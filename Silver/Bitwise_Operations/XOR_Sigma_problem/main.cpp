@@ -4,35 +4,42 @@
 using namespace std;
 
 int main(){
+    // Fast I/O
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
     int n;
     cin >> n;
     vector<int> a(n, 0);
-    for(int i = 0;i < n; i++) cin >> a[i];
+    for(int i = 0; i < n; i++) cin >> a[i];
 
     ll ans = 0;
 
-    for(int k = 0;k < 30; k++){
-        vector<int> b(n, 0);
-        int sum = 0;
+    for(int k = 0; k < 30; k++){
+        int sum = 0;       // tracks total number of 1s in array B
+        int n_ones = 0;    // tracks 1s in prefix array C
+        int n_zeros = 1;   // tracks 0s in prefix array C (starts at 1 because C[0] = 0)
+        
+        int current_prefix = 0; 
+
         for(int i = 0; i < n; i++){
-            b[i] = ((a[i] >> k) & 1);
-            sum += b[i];
-        }
-        int n_ones = 0;
-        int n_zeros = 1;
-        vector<int> c(n, 0);
-        c[0] = b[0];
-        for(int i = 1;i < n; i++){
-            c[i] = c[i-1] ^ b[i];
-        }
-        for(int i = 0; i < n; i++){
-            if(c[i] == 0){
+            int b_i = ((a[i] >> k) & 1);
+            sum += b_i;
+
+            // Maintain the cumulative prefix XOR on the fly
+            current_prefix ^= b_i;
+
+            // Count it towards our prefix distributions
+            if(current_prefix == 0){
                 n_zeros++;
-            }else if(c[i] == 1){
+            } else {
                 n_ones++;
             }
         }
-        ans += (ll)(((ll)(n_ones * n_zeros) - sum)) * (ll)(1 << k);
+
+        // Use 1LL to prevent integer overflow during the large multiplication
+        ll bit_contribution = ((ll)n_ones * n_zeros) - sum;
+        ans += bit_contribution * (1LL << k);
     }
 
     cout << ans << "\n";
