@@ -1,0 +1,92 @@
+#include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using std::endl;
+using std::string;
+using std::vector;
+
+struct Card {
+	// 1 -> ATK | 0 -> DEF
+	bool type;
+	int strength;
+};
+
+int main() {
+	int n, m;
+	std::cin >> n >> m;
+
+	vector<Card> jiro;
+	vector<Card> ciel;
+
+	for (int i = 0; i < n; i++) {
+		string type;
+		int strength;
+		std::cin >> type >> strength;
+
+		jiro.push_back({type == "ATK", strength});
+	}
+
+	for (int i = 0; i < m; i++) {
+		int strength;
+		std::cin >> strength;
+
+		ciel.push_back({1, strength});
+	}
+
+	// first case: only hit ATK + assign weak cards with strong cards
+
+	// sort by type and then by strength
+	std::sort(jiro.begin(), jiro.end(), [](const Card &a, const Card &b) {
+		if (a.type == b.type) { return a.strength < b.strength; }
+		return a.type > b.type;
+	});
+
+	std::sort(ciel.begin(), ciel.end(),
+	          [](const Card &a, const Card &b) { return a.strength > b.strength; });
+
+	int appr1 = 0;
+	for (int i = 0; i < std::min(n, m); i++) {
+		// break if either we're attacking DEF cards or we don't gain anything
+		if (!jiro[i].type || ciel[i].strength <= jiro[i].strength) { break; }
+
+		appr1 += ciel[i].strength - jiro[i].strength;
+	}
+
+	std::reverse(jiro.begin(), jiro.end());
+	std::reverse(ciel.begin(), ciel.end());
+
+	vector<bool> done(m);
+
+	int appr2 = 0;
+	for (int i = 0; i < n; i++) {
+		bool fnd = false;
+
+		for (int j = 0; j < m; j++) {
+			// if we haven't used j and this card can beat Jiro's card
+			if (!done[j] && ((jiro[i].type && ciel[j].strength >= jiro[i].strength) ||
+			                 (!jiro[i].type && ciel[j].strength > jiro[i].strength))) {
+				done[j] = true;
+
+				if (jiro[i].type) { appr2 += ciel[j].strength - jiro[i].strength; }
+
+				fnd = true;
+				break;
+			}
+		}
+
+		// if we can't do any direct damage, output the first approach
+		if (!fnd) {
+			std::cout << appr1 << endl;
+			return 0;
+		}
+	}
+
+	// add up all of the direct damage done
+	for (int i = 0; i < m; i++) {
+		if (!done[i]) { appr2 += ciel[i].strength; }
+	}
+
+	std::cout << std::max(appr2, appr1) << endl;
+}
