@@ -1,8 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <numeric>
-#include <set>
-#include <unordered_set>
+#include <algorithm>
 using namespace std;
 
 int main(){
@@ -10,23 +9,23 @@ int main(){
     cin >> n;
     vector<int> x(n+1, 0);
     for(int i = 1; i <= n; i++) cin >> x[i];
+    sort(x.begin(), x.end());
+    int maxVal = accumulate(x.begin(), x.end(), 0);
+    vector<bool> dp(maxVal+1, false);
+    dp[0] = true;
 
-    set<int> prev;
-    
-    for(int i = 1; i <= n; i++){
-        vector<int> new_vals;
-        for(const int& num : prev){
-            new_vals.push_back(num + x[i]);
+    for(const int& num : x){
+        for(int i = maxVal; i >= 1; i--){
+            if(i-num < 0) break;
+            dp[i] = dp[i] || dp[i-num];
         }
-        for(const int& num : new_vals){
-            prev.insert(num);
-        }
-        prev.insert(x[i]);
     }
-
-    cout << prev.size() << "\n";
-    for(const int& num : prev){
-        cout << num << " ";
+    int total = accumulate(dp.begin(), dp.end(), 0) - 1; // dp[0]
+    cout << total << "\n";
+    for(int i = 1; i <= maxVal; i++){
+        if(dp[i]){
+            cout << i << " ";
+        }
     }
     cout << "\n";
 
